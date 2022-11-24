@@ -1,7 +1,4 @@
-enum Role {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
-}
+type Role = 'ADMIN' | 'USER';
 
 export class CreateUserDto {
   name: string;
