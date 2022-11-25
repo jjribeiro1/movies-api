@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { NotFoundException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -16,6 +16,17 @@ export class UserService {
     role: true,
   };
   constructor(private readonly prisma: PrismaService) {}
+
+  async findById(id: string): Promise<UserEntity> {
+    return this.prisma.user
+      .findUniqueOrThrow({
+        where: { id },
+        select: this.userSelect,
+      })
+      .catch(() => {
+        throw new NotFoundException(`Usuário com ID ${id} não encontrado`);
+      });
+  }
 
   async create(dto: CreateUserDto): Promise<UserEntity> {
     try {
@@ -38,8 +49,12 @@ export class UserService {
     }
   }
 
-  findOne(id: string) {
-    throw new Error('Method not implemented.');
+  async findOne(id: string): Promise<UserEntity> {
+    try {
+      return this.findById(id);
+    } catch (err) {
+      console.log(err.message);
+    }
   }
 
   update(id: string, dto: UpdateUserDto) {
