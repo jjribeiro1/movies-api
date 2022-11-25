@@ -30,8 +30,12 @@ export class UserService {
     }
   }
 
-  findAll() {
-    throw new Error('Method not implemented.');
+  async findAll(): Promise<UserEntity[]> {
+    try {
+      return this.prisma.user.findMany({ select: this.userSelect });
+    } catch (err) {
+      console.log(err.message);
+    }
   }
 
   findOne(id: string) {

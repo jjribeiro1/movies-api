@@ -22,7 +22,7 @@ export class UserController {
   }
 
   @Get()
-  async findAll() {
+  async findAll(): Promise<UserEntity[]> {
     return this.userService.findAll();
   }
 
