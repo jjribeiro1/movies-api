@@ -32,12 +32,15 @@ export class UserController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() dto: UpdateUserDto,
+  ): Promise<UserEntity> {
     return this.userService.update(id, dto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string): Promise<void> {
     return this.userService.remove(id);
   }
 }

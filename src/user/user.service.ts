@@ -57,10 +57,32 @@ export class UserService {
     }
   }
 
-  update(id: string, dto: UpdateUserDto) {
-    throw new Error('Method not implemented.');
+  async update(id: string, dto: UpdateUserDto): Promise<UserEntity> {
+    try {
+      await this.findById(id);
+
+      if (dto.password) {
+        dto.password = await bcrypt.hash(dto.password, 10);
+      }
+      const data = {
+        ...dto,
+      };
+
+      return this.prisma.user.update({
+        where: { id },
+        data,
+        select: this.userSelect,
+      });
+    } catch (err) {
+      console.log(err.message);
+    }
   }
-  remove(id: string) {
-    throw new Error('Method not implemented.');
+  async remove(id: string) {
+    try {
+      await this.findById(id);
+      await this.prisma.user.delete({ where: { id } });
+    } catch (err) {
+      console.log(err.message);
+    }
   }
 }
