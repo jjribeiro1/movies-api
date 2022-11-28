@@ -1,6 +1,7 @@
 import { IsString, MinLength, IsEmail, IsNotEmpty } from 'class-validator';
 import { IsValidCpf } from '../decorators/validCpf.decorator';
 import { IsValidPassword } from '../decorators/validPassword.decorator';
+import { IsValidRole } from '../decorators/validRole.decorator';
 
 export class CreateUserDto {
   @IsString()
@@ -17,5 +18,6 @@ export class CreateUserDto {
   @IsValidCpf()
   cpf: string;
 
+  @IsValidRole(['ADMIN', 'USER'])
   role: string;
 }
