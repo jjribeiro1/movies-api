@@ -1,4 +1,5 @@
 import { IsString, MinLength, IsEmail, IsNotEmpty } from 'class-validator';
+import { IsValidCpf } from '../decorators/validCpf.decorator';
 import { IsValidPassword } from '../decorators/validPassword.decorator';
 
 export class CreateUserDto {
@@ -13,6 +14,7 @@ export class CreateUserDto {
   @IsValidPassword()
   password: string;
 
+  @IsValidCpf()
   cpf: string;
 
   role: string;
