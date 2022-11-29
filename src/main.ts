@@ -13,6 +13,7 @@ async function bootstrap() {
       'Api para gerenciamento e avaliação de filmes de diferentes serviços de streaming',
     )
     .setVersion('1.0')
+    .addTag('status')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

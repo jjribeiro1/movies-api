@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  Status(): string {
+    return `Server is running, check: "localhost:3000/api" for documentation`;
   }
 }
