@@ -3,6 +3,7 @@ import { IsString, MinLength, IsEmail, IsNotEmpty } from 'class-validator';
 import { IsValidCpf } from '../decorators/validCpf.decorator';
 import { IsValidPassword } from '../decorators/validPassword.decorator';
 import { IsValidRole } from '../decorators/validRole.decorator';
+import { IsUnique } from '../decorators/IsUnique.decorator';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -19,6 +20,7 @@ export class CreateUserDto {
     example: 'seuemail@hotmail.com',
   })
   @IsEmail()
+  @IsUnique('user')
   email: string;
 
   @ApiProperty({
@@ -33,6 +35,7 @@ export class CreateUserDto {
     example: '209.096.870-21',
   })
   @IsValidCpf()
+  @IsUnique('user')
   cpf: string;
 
   @ApiProperty({
