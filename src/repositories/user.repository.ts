@@ -28,7 +28,7 @@ export class UserRepository {
 
       return createdUser;
     } catch (error) {
-      throw new Exception(ExceptionsType.DATABASE, 'Error creating user');
+      throw new Exception(ExceptionsType.INVALIDDATA, 'Error creating user');
     }
   }
 
@@ -40,8 +40,7 @@ export class UserRepository {
 
       return users;
     } catch (error) {
-      console.log(error);
-      return error.message;
+      throw new Exception(ExceptionsType.DATABASE);
     }
   }
 
@@ -54,24 +53,24 @@ export class UserRepository {
 
       return user;
     } catch (error) {
-      console.log(error);
-      return error.message;
+      throw new Exception(ExceptionsType.NOTFOUND, error.message);
     }
   }
 
   async update(id: string, dto: UpdateUserDto): Promise<UserEntity> {
     try {
-      await this.findById(id);
-      const data = { ...dto };
-      const updatedUser = await this.prisma.user.update({
-        where: { id },
-        data,
-        select: this.userSelect,
-      });
-      return updatedUser;
+      const userexistis = await this.findById(id);
+      if (userexistis) {
+        const data = { ...dto };
+        const updatedUser = await this.prisma.user.update({
+          where: { id },
+          data,
+          select: this.userSelect,
+        });
+        return updatedUser;
+      }
     } catch (error) {
-      console.log(error);
-      return error.message;
+      throw new Exception(ExceptionsType.INVALIDDATA, 'Error updating user');
     }
   }
 
@@ -80,8 +79,7 @@ export class UserRepository {
       await this.findById(id);
       await this.prisma.user.delete({ where: { id } });
     } catch (error) {
-      console.log(error);
-      return error.message;
+      throw new Exception(ExceptionsType.INVALIDDATA, 'Error deleting user');
     }
   }
 }

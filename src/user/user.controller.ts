@@ -36,7 +36,11 @@ export class UserController {
   })
   @Get()
   async findAll(): Promise<UserEntity[]> {
-    return this.userService.findAll();
+    try {
+      return await this.userService.findAll();
+    } catch (error) {
+      handleException(error);
+    }
   }
 
   @ApiOperation({
@@ -44,7 +48,11 @@ export class UserController {
   })
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<UserEntity> {
-    return this.userService.findOne(id);
+    try {
+      return await this.userService.findOne(id);
+    } catch (error) {
+      handleException(error);
+    }
   }
 
   @ApiOperation({
@@ -55,7 +63,11 @@ export class UserController {
     @Param('id') id: string,
     @Body() dto: UpdateUserDto,
   ): Promise<UserEntity> {
-    return this.userService.update(id, dto);
+    try {
+      return await this.userService.update(id, dto);
+    } catch (error) {
+      handleException(error);
+    }
   }
 
   @ApiOperation({
@@ -63,6 +75,10 @@ export class UserController {
   })
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<void> {
-    return this.userService.remove(id);
+    try {
+      return await this.userService.remove(id);
+    } catch (error) {
+      handleException(error);
+    }
   }
 }

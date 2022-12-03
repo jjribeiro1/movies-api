@@ -1,4 +1,7 @@
-import { BadRequestException } from '@nestjs/common';
+import {
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { ExceptionsType } from './newException';
 
 interface Exception {
@@ -8,6 +11,15 @@ interface Exception {
 
 export function handleException({ exceptionType, message }: Exception) {
   if (exceptionType === ExceptionsType.DATABASE) {
-    throw new BadRequestException(message ? message : 'Database Error');
+    throw new InternalServerErrorException(
+      message ? message : 'Unexpected Database Error',
+    );
+  }
+
+  if (
+    exceptionType === ExceptionsType.NOTFOUND ||
+    exceptionType === ExceptionsType.INVALIDDATA
+  ) {
+    throw new BadRequestException(message ? message : 'Invalid Data');
   }
 }

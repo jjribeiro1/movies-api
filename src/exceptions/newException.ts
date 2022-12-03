@@ -1,5 +1,7 @@
 export enum ExceptionsType {
   DATABASE,
+  NOTFOUND,
+  INVALIDDATA,
 }
 
 export class Exception {
