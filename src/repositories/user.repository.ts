@@ -3,6 +3,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { UpdateUserDto } from 'src/user/dto/update-user.dto';
 import { UserEntity } from 'src/user/entities/user.entity';
+import { Exception } from 'src/exceptions/newException';
+import { ExceptionsType } from 'src/exceptions/newException';
 
 @Injectable()
 export class UserRepository {
@@ -26,8 +28,7 @@ export class UserRepository {
 
       return createdUser;
     } catch (error) {
-      console.log(error.message);
-      return error.message;
+      throw new Exception(ExceptionsType.DATABASE, 'Error creating user');
     }
   }
 

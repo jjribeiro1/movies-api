@@ -8,6 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { handleException } from 'src/exceptions/handleException';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from './entities/user.entity';
@@ -23,7 +24,11 @@ export class UserController {
   })
   @Post()
   async create(@Body() dto: CreateUserDto): Promise<UserEntity> {
-    return this.userService.create(dto);
+    try {
+      return await this.userService.create(dto);
+    } catch (error) {
+      handleException(error);
+    }
   }
 
   @ApiOperation({
