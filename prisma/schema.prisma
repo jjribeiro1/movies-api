@@ -11,12 +11,23 @@ datasource db {
 }
 
 model User {
-    id       String @id @default(uuid())
+    id       String    @id @default(uuid())
     name     String
-    email    String @unique
+    email    String    @unique
     password String
-    cpf      String @unique
-    role     String @default("USER")
+    cpf      String    @unique
+    role     String    @default("USER")
+    profiles Profile[]
 
     @@map("user")
+}
+
+model Profile {
+    id       String @id @default(uuid())
+    name     String @unique
+    imageUrl String
+    User     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId   String
+
+    @@map("profile")
 }
