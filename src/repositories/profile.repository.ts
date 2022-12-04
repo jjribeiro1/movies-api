@@ -55,10 +55,13 @@ export class ProfileRepository {
   async update(id: string, dto: UpdateProfileDto): Promise<ProfileEntity> {
     try {
       await this.findById(id);
-      const data = { ...dto };
+      const { name, imageUrl } = dto;
       const updatedProfile = await this.prisma.profile.update({
         where: { id },
-        data,
+        data: {
+          name,
+          imageUrl,
+        },
       });
       return updatedProfile;
     } catch (error) {
