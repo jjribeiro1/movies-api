@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import { Exception, ExceptionsType } from 'src/exceptions/newException';
 import { ProfileRepository } from 'src/repositories/profile.repository';
 import { UserRepository } from 'src/repositories/user.repository';
@@ -5,6 +6,7 @@ import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ProfileEntity } from './entities/profile.entity';
 
+@Injectable()
 export class ProfileService {
   constructor(
     private readonly profileRepository: ProfileRepository,
