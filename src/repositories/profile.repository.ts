@@ -12,9 +12,17 @@ export class ProfileRepository {
 
   async create(dto: CreateProfileDto): Promise<ProfileEntity> {
     try {
-      const data = { ...dto };
+      const { name, imageUrl, userId } = dto;
       const createdProfile = await this.prisma.profile.create({
-        data,
+        data: {
+          name,
+          imageUrl,
+          User: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
       });
 
       return createdProfile;
