@@ -59,16 +59,14 @@ export class UserRepository {
 
   async update(id: string, dto: UpdateUserDto): Promise<UserEntity> {
     try {
-      const userexistis = await this.findById(id);
-      if (userexistis) {
-        const data = { ...dto };
-        const updatedUser = await this.prisma.user.update({
-          where: { id },
-          data,
-          select: this.userSelect,
-        });
-        return updatedUser;
-      }
+      await this.findById(id);
+      const data = { ...dto };
+      const updatedUser = await this.prisma.user.update({
+        where: { id },
+        data,
+        select: this.userSelect,
+      });
+      return updatedUser;
     } catch (error) {
       throw new Exception(ExceptionsType.INVALIDDATA, 'Error updating user');
     }
