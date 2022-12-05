@@ -15,6 +15,7 @@ export class UserRepository {
     email: true,
     password: false,
     role: true,
+    profiles: true,
   };
   constructor(private readonly prisma: PrismaService) {}
 
@@ -35,7 +36,16 @@ export class UserRepository {
   async findAll(): Promise<UserEntity[]> {
     try {
       const users = await this.prisma.user.findMany({
-        select: this.userSelect,
+        select: {
+          ...this.userSelect,
+          profiles: {
+            select: {
+              id: true,
+              name: true,
+              imageUrl: true,
+            },
+          },
+        },
       });
 
       return users;
