@@ -32,7 +32,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: 'Cpf do usuário',
-    example: '209.096.870-21',
+    example: '20909687021',
   })
   @IsValidCpf()
   @IsUnique('user')
