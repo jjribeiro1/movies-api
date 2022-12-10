@@ -12,11 +12,16 @@ import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { handleException } from 'src/exceptions/handleException';
 import { MovieEntity } from './entities/movie.entity';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('movie')
 @Controller('movie')
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
+  @ApiOperation({
+    summary: 'Criar um novo filme',
+  })
   @Post()
   async create(@Body() dto: CreateMovieDto): Promise<MovieEntity> {
     try {
@@ -26,6 +31,9 @@ export class MovieController {
     }
   }
 
+  @ApiOperation({
+    summary: 'Listar todos os filmes',
+  })
   @Get()
   async findAll(): Promise<MovieEntity[]> {
     try {
@@ -35,6 +43,9 @@ export class MovieController {
     }
   }
 
+  @ApiOperation({
+    summary: 'Listar um novo filme por ID',
+  })
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<MovieEntity> {
     try {
@@ -44,6 +55,9 @@ export class MovieController {
     }
   }
 
+  @ApiOperation({
+    summary: 'Atualizar um novo filme',
+  })
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -56,6 +70,9 @@ export class MovieController {
     }
   }
 
+  @ApiOperation({
+    summary: 'Deletar um novo filme',
+  })
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<void> {
     try {
