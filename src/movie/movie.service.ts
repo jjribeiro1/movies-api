@@ -1,26 +1,29 @@
 import { Injectable } from '@nestjs/common';
+import { MovieRepository } from 'src/repositories/movie.repository';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
+import { MovieEntity } from './entities/movie.entity';
 
 @Injectable()
 export class MovieService {
-  create(createMovieDto: CreateMovieDto) {
-    return 'This action adds a new movie';
+  constructor(private readonly movieRepository: MovieRepository) {}
+  async create(dto: CreateMovieDto): Promise<MovieEntity> {
+    return await this.movieRepository.create(dto);
   }
 
-  findAll() {
-    return `This action returns all movie`;
+  async findAll(): Promise<MovieEntity[]> {
+    return await this.movieRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} movie`;
+  async findOne(id: string): Promise<MovieEntity> {
+    return await this.movieRepository.findById(id);
   }
 
-  update(id: number, updateMovieDto: UpdateMovieDto) {
-    return `This action updates a #${id} movie`;
+  async update(id: string, dto: UpdateMovieDto): Promise<MovieEntity> {
+    return await this.movieRepository.update(id, dto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} movie`;
+  async remove(id: string): Promise<void> {
+    return await this.movieRepository.delete(id);
   }
 }
