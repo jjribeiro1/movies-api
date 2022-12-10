@@ -1,9 +1,11 @@
+import { Injectable } from '@nestjs/common';
 import { Exception, ExceptionsType } from 'src/exceptions/newException';
 import { CreateMovieDto } from 'src/movie/dto/create-movie.dto';
 import { UpdateMovieDto } from 'src/movie/dto/update-movie.dto';
 import { MovieEntity } from 'src/movie/entities/movie.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 
+@Injectable()
 export class MovieRepository {
   private readonly movieSelect = {
     id: true,
@@ -13,14 +15,15 @@ export class MovieRepository {
     ageRating: true,
     stream: true,
     genres: true,
-    FavoriteMoviesOnProfile: true,
+    favoriteMoviesOnProfile: true,
   };
   constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: CreateMovieDto): Promise<MovieEntity> {
-    const { name, imageUrl, ageRating, releaseYear, genreIds, streamingIds } =
-      dto;
     try {
+      const { name, imageUrl, ageRating, releaseYear, streamingIds, genreIds } =
+        dto;
+
       const createdMovie = await this.prisma.movie.create({
         data: {
           name,
@@ -28,10 +31,10 @@ export class MovieRepository {
           ageRating,
           releaseYear,
           stream: {
-            connect: streamingIds?.map((id) => ({ id: id })),
+            connect: streamingIds.map((id) => ({ id: id })),
           },
           genres: {
-            connect: genreIds?.map((id) => ({ id: id })),
+            connect: genreIds.map((id) => ({ id: id })),
           },
         },
         select: this.movieSelect,
@@ -39,6 +42,8 @@ export class MovieRepository {
 
       return createdMovie;
     } catch (error) {
+      console.log(error);
+
       throw new Exception(ExceptionsType.INVALIDDATA, 'Error creating movie');
     }
   }
