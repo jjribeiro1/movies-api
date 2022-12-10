@@ -23,11 +23,42 @@ model User {
 }
 
 model Profile {
-    id       String @id @default(uuid())
-    name     String
-    imageUrl String
-    User     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId   String
+    id                      String  @id @default(uuid())
+    name                    String
+    imageUrl                String  @map("image_url")
+    User                    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId                  String  @map("user_id")
+    favoriteMoviesOnProfile Movie[]
 
     @@map("profile")
+}
+
+model Movie {
+    id                      String      @id @default(uuid())
+    name                    String      @unique
+    imageUrl                String      @unique @map("image_url")
+    releaseYear             Int         @map("release_year")
+    ageRating               Int         @map("age_rating")
+    stream                  Streaming[]
+    genres                  Genre[]
+    favoriteMoviesOnProfile Profile[]
+
+    @@map("movie")
+}
+
+model Genre {
+    id     String  @id @default(uuid())
+    name   String  @unique
+    movies Movie[]
+
+    @@map("genre")
+}
+
+model Streaming {
+    id     String  @id @default(uuid())
+    name   String  @unique
+    price  Float
+    movies Movie[]
+
+    @@map("streaming")
 }
