@@ -1,5 +1,12 @@
-import { CreateMovieDto } from '../dto/create-movie.dto';
+import { GenreEntity } from './genre.entity';
+import { StreamingEntity } from './streaming.entity';
 
-export class MovieEntity extends CreateMovieDto {
+export class MovieEntity {
   id: string;
+  name: string;
+  imageUrl: string;
+  releaseYear: number;
+  ageRating: number;
+  stream: StreamingEntity[];
+  genres: GenreEntity[];
 }
