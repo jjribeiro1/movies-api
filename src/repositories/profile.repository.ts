@@ -8,6 +8,12 @@ import { ExceptionsType } from 'src/exceptions/newException';
 
 @Injectable()
 export class ProfileRepository {
+  private readonly profileSelect = {
+    id: true,
+    name: true,
+    imageUrl: true,
+    userId: true,
+  };
   constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: CreateProfileDto): Promise<ProfileEntity> {
@@ -44,6 +50,20 @@ export class ProfileRepository {
     try {
       const profile = await this.prisma.profile.findUniqueOrThrow({
         where: { id },
+        select: {
+          ...this.profileSelect,
+          favoriteMoviesOnProfile: {
+            select: {
+              id: true,
+              name: true,
+              imageUrl: true,
+              ageRating: true,
+              releaseYear: true,
+              stream: true,
+              genres: true,
+            },
+          },
+        },
       });
 
       return profile;
@@ -61,6 +81,20 @@ export class ProfileRepository {
         data: {
           name,
           imageUrl,
+        },
+        select: {
+          ...this.profileSelect,
+          favoriteMoviesOnProfile: {
+            select: {
+              id: true,
+              name: true,
+              imageUrl: true,
+              ageRating: true,
+              releaseYear: true,
+              stream: true,
+              genres: true,
+            },
+          },
         },
       });
       return updatedProfile;
