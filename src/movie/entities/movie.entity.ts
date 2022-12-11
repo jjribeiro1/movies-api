@@ -1,5 +1,5 @@
 import { GenreEntity } from '../../genre/entities/genre.entity';
-import { StreamingEntity } from './streaming.entity';
+import { StreamingEntity } from '../../streaming/entities/streaming.entity';
 
 export class MovieEntity {
   id: string;
