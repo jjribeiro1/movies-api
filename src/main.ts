@@ -20,6 +20,7 @@ async function bootstrap() {
     .addTag('profile')
     .addTag('movie')
     .addTag('genre')
+    .addTag('streaming')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
