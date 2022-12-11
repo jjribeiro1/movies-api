@@ -7,6 +7,15 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class GenreRepository {
+  private readonly movieSelect = {
+    id: true,
+    name: true,
+    imageUrl: true,
+    ageRating: true,
+    releaseYear: true,
+    stream: true,
+    genres: true,
+  };
   constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: CreateGenreDto): Promise<GenreEntity> {
@@ -35,6 +44,13 @@ export class GenreRepository {
     try {
       const genre = await this.prisma.genre.findUniqueOrThrow({
         where: { id },
+        select: {
+          id: true,
+          name: true,
+          movies: {
+            select: this.movieSelect,
+          },
+        },
       });
       return genre;
     } catch (error) {
@@ -49,6 +65,13 @@ export class GenreRepository {
         where: { id },
         data: {
           name: dto.name,
+        },
+        select: {
+          id: true,
+          name: true,
+          movies: {
+            select: this.movieSelect,
+          },
         },
       });
       return updatedGenre;
