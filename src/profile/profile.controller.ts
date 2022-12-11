@@ -76,7 +76,7 @@ export class ProfileController {
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<void> {
     try {
-      return await this.profileService.delete(id);
+      return await this.profileService.remove(id);
     } catch (error) {
       handleException(error);
     }

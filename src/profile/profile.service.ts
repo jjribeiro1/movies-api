@@ -38,7 +38,7 @@ export class ProfileService {
     return await this.profileRepository.update(id, data);
   }
 
-  async delete(id: string): Promise<void> {
+  async remove(id: string): Promise<void> {
     return await this.profileRepository.delete(id);
   }
 }
