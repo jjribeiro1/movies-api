@@ -5,6 +5,10 @@ import { UpdateProfileDto } from 'src/profile/dto/update-profile.dto';
 import { ProfileEntity } from 'src/profile/entities/profile.entity';
 import { Exception } from 'src/exceptions/newException';
 import { ExceptionsType } from 'src/exceptions/newException';
+import {
+  AddOrRemoveFavoriteMovieDto,
+  FavoriteMovieResponse,
+} from 'src/profile/dto/favorite-movie.dto.';
 
 @Injectable()
 export class ProfileRepository {
@@ -109,6 +113,41 @@ export class ProfileRepository {
       await this.prisma.profile.delete({ where: { id } });
     } catch (error) {
       throw new Exception(ExceptionsType.INVALIDDATA, 'Error deleting profile');
+    }
+  }
+
+  async addFavoriteMovie(
+    dto: AddOrRemoveFavoriteMovieDto,
+  ): Promise<FavoriteMovieResponse> {
+    try {
+      const { profileId, movieId } = dto;
+      const addFavorite = await this.prisma.profile.update({
+        where: { id: profileId },
+        data: {
+          favoriteMoviesOnProfile: {
+            connect: {
+              id: movieId,
+            },
+          },
+        },
+        select: {
+          favoriteMoviesOnProfile: {
+            select: {
+              id: true,
+              name: true,
+              imageUrl: true,
+              ageRating: true,
+              releaseYear: true,
+              genres: true,
+              stream: true,
+            },
+          },
+        },
+      });
+
+      return addFavorite;
+    } catch (error) {
+      throw new Exception(ExceptionsType.INVALIDDATA, 'Error favorito');
     }
   }
 }
