@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  HttpStatus,
+  HttpCode,
 } from '@nestjs/common';
 import { StreamingService } from './streaming.service';
 import { CreateStreamingDto } from './dto/create-streaming.dto';
@@ -74,6 +76,7 @@ export class StreamingController {
     summary: 'Deletar um streaming por ID',
   })
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string): Promise<void> {
     try {
       return await this.streamingService.remove(id);

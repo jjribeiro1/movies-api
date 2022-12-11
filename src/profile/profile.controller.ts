@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -74,6 +76,7 @@ export class ProfileController {
     summary: 'Deletar um perfil por ID',
   })
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string): Promise<void> {
     try {
       return await this.profileService.remove(id);
