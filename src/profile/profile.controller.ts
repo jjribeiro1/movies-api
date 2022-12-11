@@ -12,6 +12,10 @@ import {
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { handleException } from 'src/exceptions/handleException';
 import { CreateProfileDto } from './dto/create-profile.dto';
+import {
+  AddOrRemoveFavoriteMovieDto,
+  FavoriteMovieResponse,
+} from './dto/favorite-movie.dto.';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ProfileEntity } from './entities/profile.entity';
 import { ProfileService } from './profile.service';
@@ -80,6 +84,20 @@ export class ProfileController {
   async remove(@Param('id') id: string): Promise<void> {
     try {
       return await this.profileService.remove(id);
+    } catch (error) {
+      handleException(error);
+    }
+  }
+
+  @ApiOperation({
+    summary: 'Favoritar um filme',
+  })
+  @Post('/add-favorite')
+  async addFavorite(
+    @Body() dto: AddOrRemoveFavoriteMovieDto,
+  ): Promise<FavoriteMovieResponse> {
+    try {
+      return await this.profileService.addFavoriteMovie(dto);
     } catch (error) {
       handleException(error);
     }

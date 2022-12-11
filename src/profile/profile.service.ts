@@ -1,8 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Exception, ExceptionsType } from 'src/exceptions/newException';
+import { MovieRepository } from 'src/repositories/movie.repository';
 import { ProfileRepository } from 'src/repositories/profile.repository';
 import { UserRepository } from 'src/repositories/user.repository';
 import { CreateProfileDto } from './dto/create-profile.dto';
+import {
+  AddOrRemoveFavoriteMovieDto,
+  FavoriteMovieResponse,
+} from './dto/favorite-movie.dto.';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ProfileEntity } from './entities/profile.entity';
 
@@ -11,6 +16,7 @@ export class ProfileService {
   constructor(
     private readonly profileRepository: ProfileRepository,
     private readonly userRepository: UserRepository,
+    private readonly movieRepository: MovieRepository,
   ) {}
 
   async create(dto: CreateProfileDto): Promise<ProfileEntity> {
@@ -40,5 +46,16 @@ export class ProfileService {
 
   async remove(id: string): Promise<void> {
     return await this.profileRepository.delete(id);
+  }
+
+  async addFavoriteMovie(
+    dto: AddOrRemoveFavoriteMovieDto,
+  ): Promise<FavoriteMovieResponse> {
+    const { profileId, movieId } = dto;
+
+    await this.profileRepository.findById(profileId);
+    await this.movieRepository.findById(movieId);
+
+    return await this.profileRepository.addFavoriteMovie(dto);
   }
 }
