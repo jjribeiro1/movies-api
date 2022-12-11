@@ -56,7 +56,7 @@ export class MovieController {
   }
 
   @ApiOperation({
-    summary: 'Atualizar um novo filme',
+    summary: 'Atualizar um filme por ID',
   })
   @Patch(':id')
   async update(
@@ -71,7 +71,7 @@ export class MovieController {
   }
 
   @ApiOperation({
-    summary: 'Deletar um novo filme',
+    summary: 'Deletar um filme por ID',
   })
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<void> {
