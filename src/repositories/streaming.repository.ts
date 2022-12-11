@@ -13,7 +13,7 @@ export class StreamingRepository {
     imageUrl: true,
     ageRating: true,
     releaseYear: true,
-    stream: false,
+    stream: true,
     genres: true,
   };
   constructor(private readonly prisma: PrismaService) {}
@@ -38,16 +38,7 @@ export class StreamingRepository {
 
   async findAll(): Promise<StreamingEntity[]> {
     try {
-      const streamings = await this.prisma.streaming.findMany({
-        select: {
-          id: true,
-          name: true,
-          price: true,
-          movies: {
-            select: this.movieSelect,
-          },
-        },
-      });
+      const streamings = await this.prisma.streaming.findMany();
       return streamings;
     } catch (error) {
       throw new Exception(ExceptionsType.DATABASE);
