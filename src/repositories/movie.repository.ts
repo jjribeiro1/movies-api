@@ -15,7 +15,6 @@ export class MovieRepository {
     ageRating: true,
     stream: true,
     genres: true,
-    favoriteMoviesOnProfile: true,
   };
   constructor(private readonly prisma: PrismaService) {}
 
@@ -51,7 +50,9 @@ export class MovieRepository {
   async findAll(): Promise<MovieEntity[]> {
     try {
       const movies = await this.prisma.movie.findMany({
-        select: this.movieSelect,
+        select: {
+          ...this.movieSelect,
+        },
       });
 
       return movies;
