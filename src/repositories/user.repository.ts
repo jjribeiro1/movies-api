@@ -15,7 +15,6 @@ export class UserRepository {
     email: true,
     password: false,
     role: true,
-    profiles: true,
   };
   constructor(private readonly prisma: PrismaService) {}
 
@@ -41,8 +40,6 @@ export class UserRepository {
           profiles: {
             select: {
               id: true,
-              name: true,
-              imageUrl: true,
             },
           },
         },
@@ -58,7 +55,17 @@ export class UserRepository {
     try {
       const user = await this.prisma.user.findUniqueOrThrow({
         where: { id },
-        select: this.userSelect,
+        select: {
+          ...this.userSelect,
+          profiles: {
+            select: {
+              id: true,
+              name: true,
+              imageUrl: true,
+              favoriteMoviesOnProfile: true,
+            },
+          },
+        },
       });
 
       return user;
@@ -74,7 +81,17 @@ export class UserRepository {
       const updatedUser = await this.prisma.user.update({
         where: { id },
         data,
-        select: this.userSelect,
+        select: {
+          ...this.userSelect,
+          profiles: {
+            select: {
+              id: true,
+              name: true,
+              imageUrl: true,
+              favoriteMoviesOnProfile: true,
+            },
+          },
+        },
       });
       return updatedUser;
     } catch (error) {
