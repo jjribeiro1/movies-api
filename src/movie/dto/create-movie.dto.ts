@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString, IsUrl, IsUUID, MinLength } from 'class-validator';
-import { IsUnique } from 'src/user/decorators/IsUnique.decorator';
 
 export class CreateMovieDto {
   @IsString()
@@ -9,7 +8,6 @@ export class CreateMovieDto {
     description: 'Nome do filme',
     example: 'Vingadores',
   })
-  @IsUnique('movie')
   name: string;
 
   @IsUrl()
@@ -17,7 +15,6 @@ export class CreateMovieDto {
     description: 'Url da imagem do filme',
     example: 'vingadores.png',
   })
-  @IsUnique('movie')
   imageUrl: string;
 
   @IsNumber()

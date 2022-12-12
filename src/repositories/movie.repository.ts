@@ -74,6 +74,24 @@ export class MovieRepository {
     }
   }
 
+  async findByName(name: string): Promise<MovieEntity> {
+    const movie = await this.prisma.movie.findUnique({
+      where: { name },
+      select: this.movieSelect,
+    });
+
+    return movie;
+  }
+
+  async findByImageUrl(imageUrl: string): Promise<MovieEntity> {
+    const movie = await this.prisma.movie.findUnique({
+      where: { imageUrl },
+      select: this.movieSelect,
+    });
+
+    return movie;
+  }
+
   async update(id: string, dto: UpdateMovieDto): Promise<MovieEntity> {
     const { name, imageUrl, ageRating, releaseYear, genreIds, streamingIds } =
       dto;
@@ -103,7 +121,6 @@ export class MovieRepository {
 
   async delete(id: string): Promise<void> {
     try {
-      await this.findById(id);
       await this.prisma.movie.delete({ where: { id } });
     } catch (error) {
       throw new Exception(ExceptionsType.INVALIDDATA, 'Error deleting movie');
