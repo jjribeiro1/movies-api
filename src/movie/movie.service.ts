@@ -36,20 +36,25 @@ export class MovieService {
 
   async update(id: string, dto: UpdateMovieDto): Promise<MovieEntity> {
     await this.movieRepository.findById(id);
-    const nameAlreadyExists = await this.movieRepository.findByName(dto.name);
-    if (nameAlreadyExists) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'name must be unique');
+    if (dto.name) {
+      const nameAlreadyExists = await this.movieRepository.findByName(dto.name);
+      if (nameAlreadyExists) {
+        throw new Exception(ExceptionsType.INVALIDDATA, 'name must be unique');
+      }
     }
 
-    const imageUrlAlreadyExists = await this.movieRepository.findByImageUrl(
-      dto.imageUrl,
-    );
-    if (imageUrlAlreadyExists) {
-      throw new Exception(
-        ExceptionsType.INVALIDDATA,
-        'imageUrl must be unique',
+    if (dto.imageUrl) {
+      const imageUrlAlreadyExists = await this.movieRepository.findByImageUrl(
+        dto.imageUrl,
       );
+      if (imageUrlAlreadyExists) {
+        throw new Exception(
+          ExceptionsType.INVALIDDATA,
+          'imageUrl must be unique',
+        );
+      }
     }
+
     return await this.movieRepository.update(id, dto);
   }
 
