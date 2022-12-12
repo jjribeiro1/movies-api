@@ -58,4 +58,15 @@ export class ProfileService {
 
     return await this.profileRepository.addFavoriteMovie(dto);
   }
+
+  async removeFavoriteMovie(
+    dto: AddOrRemoveFavoriteMovieDto,
+  ): Promise<FavoriteMovieResponse> {
+    const { profileId, movieId } = dto;
+
+    await this.profileRepository.findById(profileId);
+    await this.movieRepository.findById(movieId);
+
+    return await this.profileRepository.removeFavoriteMovie(dto);
+  }
 }

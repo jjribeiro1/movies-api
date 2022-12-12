@@ -147,7 +147,48 @@ export class ProfileRepository {
 
       return addFavorite;
     } catch (error) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'Error favorito');
+      throw new Exception(
+        ExceptionsType.INVALIDDATA,
+        'Error adding movie to favorites',
+      );
+    }
+  }
+
+  async removeFavoriteMovie(
+    dto: AddOrRemoveFavoriteMovieDto,
+  ): Promise<FavoriteMovieResponse> {
+    try {
+      const { profileId, movieId } = dto;
+      const removeFavorite = await this.prisma.profile.update({
+        where: { id: profileId },
+        data: {
+          favoriteMoviesOnProfile: {
+            disconnect: {
+              id: movieId,
+            },
+          },
+        },
+        select: {
+          favoriteMoviesOnProfile: {
+            select: {
+              id: true,
+              name: true,
+              imageUrl: true,
+              ageRating: true,
+              releaseYear: true,
+              genres: true,
+              stream: true,
+            },
+          },
+        },
+      });
+
+      return removeFavorite;
+    } catch (error) {
+      throw new Exception(
+        ExceptionsType.INVALIDDATA,
+        'Error deleting movie from favorites',
+      );
     }
   }
 }

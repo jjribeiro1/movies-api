@@ -102,4 +102,18 @@ export class ProfileController {
       handleException(error);
     }
   }
+
+  @ApiOperation({
+    summary: 'Remover um filme dos favoritos',
+  })
+  @Post('/remove-favorite')
+  async removeFavorite(
+    @Body() dto: AddOrRemoveFavoriteMovieDto,
+  ): Promise<FavoriteMovieResponse> {
+    try {
+      return await this.profileService.removeFavoriteMovie(dto);
+    } catch (error) {
+      handleException(error);
+    }
+  }
 }
