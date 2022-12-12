@@ -8,8 +8,10 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { handleException } from 'src/exceptions/handleException';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import {
@@ -28,6 +30,7 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Criar um novo perfil',
   })
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() dto: CreateProfileDto): Promise<ProfileEntity> {
     try {
@@ -40,6 +43,7 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Listar todos os perfis',
   })
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(): Promise<ProfileEntity[]> {
     try {
@@ -52,6 +56,7 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Listar um perfil por ID',
   })
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<ProfileEntity> {
     try {
@@ -64,6 +69,7 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Atualizar um perfil por ID',
   })
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -79,6 +85,7 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Deletar um perfil por ID',
   })
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string): Promise<void> {
@@ -92,6 +99,7 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Favoritar um filme',
   })
+  @UseGuards(JwtAuthGuard)
   @Post('/add-favorite')
   async addFavorite(
     @Body() dto: AddOrRemoveFavoriteMovieDto,
@@ -106,6 +114,7 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Remover um filme dos favoritos',
   })
+  @UseGuards(JwtAuthGuard)
   @Post('/remove-favorite')
   async removeFavorite(
     @Body() dto: AddOrRemoveFavoriteMovieDto,

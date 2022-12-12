@@ -8,6 +8,7 @@ import {
   Delete,
   HttpStatus,
   HttpCode,
+  UseGuards,
 } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
@@ -15,6 +16,7 @@ import { UpdateMovieDto } from './dto/update-movie.dto';
 import { handleException } from 'src/exceptions/handleException';
 import { MovieEntity } from './entities/movie.entity';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 
 @ApiTags('movie')
 @Controller('movie')
@@ -24,6 +26,7 @@ export class MovieController {
   @ApiOperation({
     summary: 'Criar um novo filme',
   })
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() dto: CreateMovieDto): Promise<MovieEntity> {
     try {
@@ -36,6 +39,7 @@ export class MovieController {
   @ApiOperation({
     summary: 'Listar todos os filmes',
   })
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(): Promise<MovieEntity[]> {
     try {
@@ -48,6 +52,7 @@ export class MovieController {
   @ApiOperation({
     summary: 'Listar um novo filme por ID',
   })
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<MovieEntity> {
     try {
@@ -60,6 +65,7 @@ export class MovieController {
   @ApiOperation({
     summary: 'Atualizar um filme por ID',
   })
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -75,6 +81,7 @@ export class MovieController {
   @ApiOperation({
     summary: 'Deletar um filme por ID',
   })
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string): Promise<void> {
