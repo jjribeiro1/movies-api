@@ -64,10 +64,17 @@ export class StreamingRepository {
     }
   }
 
+  async findByName(name: string): Promise<StreamingEntity> {
+    const streaming = await this.prisma.streaming.findUnique({
+      where: { name },
+    });
+
+    return streaming;
+  }
+
   async update(id: string, dto: UpdateStreamingDto): Promise<StreamingEntity> {
     try {
       const { name, price } = dto;
-      await this.findById(id);
       const updatedStreaming = await this.prisma.streaming.update({
         where: { id },
         data: {
@@ -94,7 +101,6 @@ export class StreamingRepository {
 
   async delete(id: string): Promise<void> {
     try {
-      await this.findById(id);
       await this.prisma.streaming.delete({ where: { id } });
     } catch (error) {
       throw new Exception(
