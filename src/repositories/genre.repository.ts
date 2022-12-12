@@ -58,9 +58,16 @@ export class GenreRepository {
     }
   }
 
+  async findByName(name: string): Promise<GenreEntity> {
+    const genre = await this.prisma.genre.findUnique({
+      where: { name },
+    });
+
+    return genre;
+  }
+
   async update(id: string, dto: UpdateGenreDto): Promise<GenreEntity> {
     try {
-      await this.findById(id);
       const updatedGenre = await this.prisma.genre.update({
         where: { id },
         data: {
@@ -82,7 +89,6 @@ export class GenreRepository {
 
   async delete(id: string): Promise<void> {
     try {
-      await this.findById(id);
       await this.prisma.genre.delete({ where: { id } });
     } catch (error) {
       throw new Exception(ExceptionsType.INVALIDDATA, 'Error deleting genre');
