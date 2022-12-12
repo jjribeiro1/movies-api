@@ -20,9 +20,15 @@ export class UserRepository {
 
   async create(dto: CreateUserDto): Promise<UserEntity> {
     try {
-      const data = { ...dto };
+      const { name, email, cpf, password, role } = dto;
       const createdUser = await this.prisma.user.create({
-        data,
+        data: {
+          name,
+          email,
+          cpf,
+          password,
+          role,
+        },
         select: this.userSelect,
       });
 
@@ -74,13 +80,41 @@ export class UserRepository {
     }
   }
 
+  async findByEmail(email: string): Promise<UserEntity> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email,
+      },
+      select: this.userSelect,
+    });
+
+    return user;
+  }
+
+  async findByCpf(cpf: string): Promise<UserEntity> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        cpf,
+      },
+      select: this.userSelect,
+    });
+
+    return user;
+  }
+
   async update(id: string, dto: UpdateUserDto): Promise<UserEntity> {
     try {
       await this.findById(id);
-      const data = { ...dto };
+      const { name, email, cpf, password, role } = dto;
       const updatedUser = await this.prisma.user.update({
         where: { id },
-        data,
+        data: {
+          name,
+          email,
+          cpf,
+          password,
+          role,
+        },
         select: {
           ...this.userSelect,
           profiles: {
