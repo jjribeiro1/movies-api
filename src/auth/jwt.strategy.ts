@@ -13,9 +13,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
   async validate(payload: { cpf: string }) {
-    console.log(payload);
     const user = await this.userRepository.findByCpf(payload.cpf);
-
     if (!user) {
       throw new UnauthorizedException();
     }
