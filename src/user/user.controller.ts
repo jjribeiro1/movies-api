@@ -8,8 +8,10 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { handleException } from 'src/exceptions/handleException';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -36,6 +38,7 @@ export class UserController {
   @ApiOperation({
     summary: 'Listar todos os usuários',
   })
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(): Promise<UserEntity[]> {
     try {
@@ -48,6 +51,7 @@ export class UserController {
   @ApiOperation({
     summary: 'Listar um usuário por ID',
   })
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<UserEntity> {
     try {
@@ -60,6 +64,7 @@ export class UserController {
   @ApiOperation({
     summary: 'Atualizar um usuário por ID',
   })
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -75,6 +80,7 @@ export class UserController {
   @ApiOperation({
     summary: 'Deletar um usuário por ID',
   })
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string): Promise<void> {
