@@ -39,15 +39,22 @@ export class UserService {
 
   async update(id: string, dto: UpdateUserDto): Promise<UserEntity> {
     await this.userRepository.findById(id);
-    const emailAlreadyExists = await this.userRepository.findByEmail(dto.email);
-    if (emailAlreadyExists) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'Email must be unique');
+    if (dto.email) {
+      const emailAlreadyExists = await this.userRepository.findByEmail(
+        dto.email,
+      );
+      if (emailAlreadyExists) {
+        throw new Exception(ExceptionsType.INVALIDDATA, 'Email must be unique');
+      }
     }
 
-    const cpfAlreadyExists = await this.userRepository.findByCpf(dto.cpf);
-    if (cpfAlreadyExists) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'Cpf must be unique');
+    if (dto.cpf) {
+      const cpfAlreadyExists = await this.userRepository.findByCpf(dto.cpf);
+      if (cpfAlreadyExists) {
+        throw new Exception(ExceptionsType.INVALIDDATA, 'Cpf must be unique');
+      }
     }
+
     if (dto.password) {
       dto.password = await bcrypt.hash(dto.password, 10);
     }
