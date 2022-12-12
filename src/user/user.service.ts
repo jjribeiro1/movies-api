@@ -17,6 +17,7 @@ export class UserService {
     }
 
     const cpfAlreadyExists = await this.userRepository.findByCpf(dto.cpf);
+    delete cpfAlreadyExists.password;
     if (cpfAlreadyExists) {
       throw new Exception(ExceptionsType.INVALIDDATA, 'Cpf must be unique');
     }
@@ -50,6 +51,7 @@ export class UserService {
 
     if (dto.cpf) {
       const cpfAlreadyExists = await this.userRepository.findByCpf(dto.cpf);
+      delete cpfAlreadyExists.password;
       if (cpfAlreadyExists) {
         throw new Exception(ExceptionsType.INVALIDDATA, 'Cpf must be unique');
       }

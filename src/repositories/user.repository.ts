@@ -96,7 +96,6 @@ export class UserRepository {
       where: {
         cpf,
       },
-      select: this.userSelect,
     });
 
     return user;
