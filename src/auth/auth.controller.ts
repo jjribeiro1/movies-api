@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { handleException } from 'src/exceptions/handleException';
 import { AuthService } from './auth.service';
@@ -12,6 +12,7 @@ export class AuthController {
     summary: 'Recebe um token ao fazer login',
   })
   @Post()
+  @HttpCode(HttpStatus.OK)
   async login(@Body() dto: LoginInputDto) {
     try {
       return await this.authService.login(dto);
