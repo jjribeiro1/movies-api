@@ -17,6 +17,8 @@ import { handleException } from 'src/exceptions/handleException';
 import { MovieEntity } from './entities/movie.entity';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { AccessLevel, Roles } from 'src/auth/access-level.decorator';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @ApiTags('movie')
 @Controller('movie')
@@ -26,7 +28,8 @@ export class MovieController {
   @ApiOperation({
     summary: 'Criar um novo filme',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.ADMIN)
   @Post()
   async create(@Body() dto: CreateMovieDto): Promise<MovieEntity> {
     try {
@@ -39,7 +42,8 @@ export class MovieController {
   @ApiOperation({
     summary: 'Listar todos os filmes',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.USER, Roles.ADMIN)
   @Get()
   async findAll(): Promise<MovieEntity[]> {
     try {
@@ -52,7 +56,8 @@ export class MovieController {
   @ApiOperation({
     summary: 'Listar um novo filme por ID',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.USER, Roles.ADMIN)
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<MovieEntity> {
     try {
@@ -65,7 +70,8 @@ export class MovieController {
   @ApiOperation({
     summary: 'Atualizar um filme por ID',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.ADMIN)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -81,7 +87,8 @@ export class MovieController {
   @ApiOperation({
     summary: 'Deletar um filme por ID',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.ADMIN)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string): Promise<void> {

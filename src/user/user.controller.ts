@@ -11,7 +11,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AccessLevel, Roles } from 'src/auth/access-level.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { handleException } from 'src/exceptions/handleException';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -38,7 +40,8 @@ export class UserController {
   @ApiOperation({
     summary: 'Listar todos os usuários',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.ADMIN)
   @Get()
   async findAll(): Promise<UserEntity[]> {
     try {
@@ -51,7 +54,8 @@ export class UserController {
   @ApiOperation({
     summary: 'Listar um usuário por ID',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.ADMIN)
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<UserEntity> {
     try {
@@ -64,7 +68,8 @@ export class UserController {
   @ApiOperation({
     summary: 'Atualizar um usuário por ID',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.USER, Roles.ADMIN)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -80,7 +85,8 @@ export class UserController {
   @ApiOperation({
     summary: 'Deletar um usuário por ID',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.ADMIN)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string): Promise<void> {

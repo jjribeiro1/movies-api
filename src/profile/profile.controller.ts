@@ -11,7 +11,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AccessLevel, Roles } from 'src/auth/access-level.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { handleException } from 'src/exceptions/handleException';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import {
@@ -30,7 +32,8 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Criar um novo perfil',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.USER, Roles.ADMIN)
   @Post()
   async create(@Body() dto: CreateProfileDto): Promise<ProfileEntity> {
     try {
@@ -43,7 +46,8 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Listar todos os perfis',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.USER, Roles.ADMIN)
   @Get()
   async findAll(): Promise<ProfileEntity[]> {
     try {
@@ -56,7 +60,8 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Listar um perfil por ID',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.USER, Roles.ADMIN)
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<ProfileEntity> {
     try {
@@ -69,7 +74,8 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Atualizar um perfil por ID',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.USER, Roles.ADMIN)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -85,7 +91,8 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Deletar um perfil por ID',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.USER, Roles.ADMIN)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string): Promise<void> {
@@ -99,7 +106,8 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Favoritar um filme',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.USER, Roles.ADMIN)
   @Post('/add-favorite')
   async addFavorite(
     @Body() dto: AddOrRemoveFavoriteMovieDto,
@@ -114,7 +122,8 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Remover um filme dos favoritos',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.USER, Roles.ADMIN)
   @Post('/remove-favorite')
   async removeFavorite(
     @Body() dto: AddOrRemoveFavoriteMovieDto,

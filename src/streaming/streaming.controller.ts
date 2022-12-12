@@ -17,6 +17,8 @@ import { handleException } from 'src/exceptions/handleException';
 import { StreamingEntity } from './entities/streaming.entity';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { AccessLevel, Roles } from 'src/auth/access-level.decorator';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @ApiTags('streaming')
 @Controller('streaming')
@@ -26,7 +28,8 @@ export class StreamingController {
   @ApiOperation({
     summary: 'Criar um novo streaming',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.ADMIN)
   @Post()
   async create(@Body() dto: CreateStreamingDto): Promise<StreamingEntity> {
     try {
@@ -39,7 +42,8 @@ export class StreamingController {
   @ApiOperation({
     summary: 'Listar todos os streaming',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.USER, Roles.ADMIN)
   @Get()
   async findAll(): Promise<StreamingEntity[]> {
     try {
@@ -52,7 +56,8 @@ export class StreamingController {
   @ApiOperation({
     summary: 'Listar um streaming ID',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.USER, Roles.ADMIN)
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<StreamingEntity> {
     try {
@@ -65,7 +70,8 @@ export class StreamingController {
   @ApiOperation({
     summary: 'Atualizar um streaming por ID',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.ADMIN)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -81,7 +87,8 @@ export class StreamingController {
   @ApiOperation({
     summary: 'Deletar um streaming por ID',
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AccessLevel(Roles.ADMIN)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string): Promise<void> {
