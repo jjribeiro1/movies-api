@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Exception, ExceptionsType } from 'src/exceptions/newException';
+// import { Exception, ExceptionsType } from 'src/exceptions/newException';
 import { MovieRepository } from 'src/repositories/movie.repository';
 import { ProfileRepository } from 'src/repositories/profile.repository';
 import { UserRepository } from 'src/repositories/user.repository';
@@ -21,10 +21,8 @@ export class ProfileService {
 
   async create(dto: CreateProfileDto): Promise<ProfileEntity> {
     const data = { ...dto };
-    const profileUser = await this.userRepository.findById(data.userId);
-    if (!profileUser) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'User not found');
-    }
+    await this.userRepository.findById(data.userId);
+
     return await this.profileRepository.create(data);
   }
 
@@ -37,6 +35,7 @@ export class ProfileService {
   }
 
   async update(id: string, dto: UpdateProfileDto): Promise<ProfileEntity> {
+    await this.profileRepository.findById(id);
     const data = {
       name: dto.name,
       imageUrl: dto.imageUrl,
@@ -45,6 +44,7 @@ export class ProfileService {
   }
 
   async remove(id: string): Promise<void> {
+    await this.profileRepository.findById(id);
     return await this.profileRepository.delete(id);
   }
 

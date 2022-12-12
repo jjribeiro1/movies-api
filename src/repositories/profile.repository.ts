@@ -78,7 +78,6 @@ export class ProfileRepository {
 
   async update(id: string, dto: UpdateProfileDto): Promise<ProfileEntity> {
     try {
-      await this.findById(id);
       const { name, imageUrl } = dto;
       const updatedProfile = await this.prisma.profile.update({
         where: { id },
@@ -109,7 +108,6 @@ export class ProfileRepository {
 
   async delete(id: string): Promise<void> {
     try {
-      await this.findById(id);
       await this.prisma.profile.delete({ where: { id } });
     } catch (error) {
       throw new Exception(ExceptionsType.INVALIDDATA, 'Error deleting profile');
