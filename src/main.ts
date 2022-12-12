@@ -22,6 +22,7 @@ async function bootstrap() {
     .addTag('movie')
     .addTag('genre')
     .addTag('streaming')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

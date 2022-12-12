@@ -10,7 +10,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AccessLevel, Roles } from 'src/auth/access-level.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
@@ -32,6 +32,7 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Criar um novo perfil',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.USER, Roles.ADMIN)
   @Post()
@@ -46,6 +47,7 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Listar todos os perfis',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.USER, Roles.ADMIN)
   @Get()
@@ -60,6 +62,7 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Listar um perfil por ID',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.USER, Roles.ADMIN)
   @Get(':id')
@@ -74,6 +77,7 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Atualizar um perfil por ID',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.USER, Roles.ADMIN)
   @Patch(':id')
@@ -91,6 +95,7 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Deletar um perfil por ID',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.USER, Roles.ADMIN)
   @Delete(':id')
@@ -106,6 +111,7 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Favoritar um filme',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.USER, Roles.ADMIN)
   @Post('/add-favorite')
@@ -122,6 +128,7 @@ export class ProfileController {
   @ApiOperation({
     summary: 'Remover um filme dos favoritos',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.USER, Roles.ADMIN)
   @Post('/remove-favorite')

@@ -14,7 +14,7 @@ export class CreateUserDto {
   name: string;
 
   @ApiProperty({
-    description: 'Email do usuário, necessário para fazer login',
+    description: 'Email do usuário',
     example: 'seuemail@hotmail.com',
   })
   @IsEmail()
@@ -28,7 +28,7 @@ export class CreateUserDto {
   password: string;
 
   @ApiProperty({
-    description: 'Cpf do usuário',
+    description: 'Cpf do usuário, necessário para fazer login',
     example: '20909687021',
   })
   @IsValidCpf()

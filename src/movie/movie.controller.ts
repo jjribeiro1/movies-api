@@ -15,7 +15,7 @@ import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { handleException } from 'src/exceptions/handleException';
 import { MovieEntity } from './entities/movie.entity';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { AccessLevel, Roles } from 'src/auth/access-level.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
@@ -28,6 +28,7 @@ export class MovieController {
   @ApiOperation({
     summary: 'Criar um novo filme',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.ADMIN)
   @Post()
@@ -42,6 +43,7 @@ export class MovieController {
   @ApiOperation({
     summary: 'Listar todos os filmes',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.USER, Roles.ADMIN)
   @Get()
@@ -56,6 +58,7 @@ export class MovieController {
   @ApiOperation({
     summary: 'Listar um novo filme por ID',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.USER, Roles.ADMIN)
   @Get(':id')
@@ -70,6 +73,7 @@ export class MovieController {
   @ApiOperation({
     summary: 'Atualizar um filme por ID',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.ADMIN)
   @Patch(':id')
@@ -87,6 +91,7 @@ export class MovieController {
   @ApiOperation({
     summary: 'Deletar um filme por ID',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.ADMIN)
   @Delete(':id')

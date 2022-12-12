@@ -15,7 +15,7 @@ import { CreateGenreDto } from './dto/create-genre.dto';
 import { UpdateGenreDto } from './dto/update-genre.dto';
 import { handleException } from 'src/exceptions/handleException';
 import { GenreEntity } from './entities/genre.entity';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { AccessLevel, Roles } from 'src/auth/access-level.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
@@ -28,6 +28,7 @@ export class GenreController {
   @ApiOperation({
     summary: 'Criar um novo gênero',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.ADMIN)
   @Post()
@@ -42,6 +43,7 @@ export class GenreController {
   @ApiOperation({
     summary: 'Listar todos os gêneros',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.USER, Roles.ADMIN)
   @Get()
@@ -56,6 +58,7 @@ export class GenreController {
   @ApiOperation({
     summary: 'Listar um gênero por ID',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.USER, Roles.ADMIN)
   @Get(':id')
@@ -70,6 +73,7 @@ export class GenreController {
   @ApiOperation({
     summary: 'Atualizar um gênero por ID',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.ADMIN)
   @Patch(':id')
@@ -87,6 +91,7 @@ export class GenreController {
   @ApiOperation({
     summary: 'Deletar um gênero por ID',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.ADMIN)
   @Delete(':id')

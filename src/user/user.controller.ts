@@ -10,7 +10,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AccessLevel, Roles } from 'src/auth/access-level.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
@@ -40,6 +40,7 @@ export class UserController {
   @ApiOperation({
     summary: 'Listar todos os usuários',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.ADMIN)
   @Get()
@@ -54,6 +55,7 @@ export class UserController {
   @ApiOperation({
     summary: 'Listar um usuário por ID',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.ADMIN)
   @Get(':id')
@@ -68,6 +70,7 @@ export class UserController {
   @ApiOperation({
     summary: 'Atualizar um usuário por ID',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.USER, Roles.ADMIN)
   @Patch(':id')
@@ -85,6 +88,7 @@ export class UserController {
   @ApiOperation({
     summary: 'Deletar um usuário por ID',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.ADMIN)
   @Delete(':id')

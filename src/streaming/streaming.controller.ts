@@ -15,7 +15,7 @@ import { CreateStreamingDto } from './dto/create-streaming.dto';
 import { UpdateStreamingDto } from './dto/update-streaming.dto';
 import { handleException } from 'src/exceptions/handleException';
 import { StreamingEntity } from './entities/streaming.entity';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { AccessLevel, Roles } from 'src/auth/access-level.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
@@ -28,6 +28,7 @@ export class StreamingController {
   @ApiOperation({
     summary: 'Criar um novo streaming',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.ADMIN)
   @Post()
@@ -42,6 +43,7 @@ export class StreamingController {
   @ApiOperation({
     summary: 'Listar todos os streaming',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.USER, Roles.ADMIN)
   @Get()
@@ -56,6 +58,7 @@ export class StreamingController {
   @ApiOperation({
     summary: 'Listar um streaming ID',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.USER, Roles.ADMIN)
   @Get(':id')
@@ -70,6 +73,7 @@ export class StreamingController {
   @ApiOperation({
     summary: 'Atualizar um streaming por ID',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.ADMIN)
   @Patch(':id')
@@ -87,6 +91,7 @@ export class StreamingController {
   @ApiOperation({
     summary: 'Deletar um streaming por ID',
   })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @AccessLevel(Roles.ADMIN)
   @Delete(':id')
