@@ -38,6 +38,7 @@ export class UserService {
   }
 
   async update(id: string, dto: UpdateUserDto): Promise<UserEntity> {
+    await this.userRepository.findById(id);
     if (dto.password) {
       dto.password = await bcrypt.hash(dto.password, 10);
     }
@@ -47,6 +48,7 @@ export class UserService {
     return await this.userRepository.update(id, data);
   }
   async remove(id: string) {
+    await this.userRepository.findById(id);
     return await this.userRepository.delete(id);
   }
 }
