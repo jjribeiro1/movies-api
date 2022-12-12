@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ExceptionsType } from './newException';
 
@@ -21,5 +22,9 @@ export function handleException({ exceptionType, message }: Exception) {
     exceptionType === ExceptionsType.INVALIDDATA
   ) {
     throw new BadRequestException(message ? message : 'Invalid Data');
+  }
+
+  if (exceptionType === ExceptionsType.UNAUTHORIZED) {
+    throw new UnauthorizedException(message ? message : 'Unauthorized');
   }
 }

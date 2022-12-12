@@ -2,6 +2,7 @@ export enum ExceptionsType {
   DATABASE,
   NOTFOUND,
   INVALIDDATA,
+  UNAUTHORIZED,
 }
 
 export class Exception {
