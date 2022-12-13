@@ -11,12 +11,14 @@ export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async create(dto: CreateUserDto): Promise<UserEntity> {
-    const emailAlreadyExists = await this.userRepository.findByEmail(dto.email);
+    const { email, cpf } = dto;
+    const emailAlreadyExists = await this.userRepository.findByEmail(email);
+
     if (emailAlreadyExists) {
       throw new Exception(ExceptionsType.INVALIDDATA, 'Email must be unique');
     }
 
-    const cpfAlreadyExists = await this.userRepository.findByCpf(dto.cpf);
+    const cpfAlreadyExists = await this.userRepository.findByCpf(cpf);
     if (cpfAlreadyExists) {
       throw new Exception(ExceptionsType.INVALIDDATA, 'Cpf must be unique');
     }
@@ -38,6 +40,23 @@ export class UserService {
   }
 
   async update(id: string, dto: UpdateUserDto): Promise<UserEntity> {
+    await this.findOne(id);
+    const { cpf, email } = dto;
+
+    if (email) {
+      const emailAlreadyExists = await this.userRepository.findByEmail(email);
+      if (emailAlreadyExists) {
+        throw new Exception(ExceptionsType.INVALIDDATA, 'email already exists');
+      }
+    }
+
+    if (cpf) {
+      const cpfAlreadyExists = await this.userRepository.findByCpf(cpf);
+      if (cpfAlreadyExists) {
+        throw new Exception(ExceptionsType.INVALIDDATA, 'cpf already exists');
+      }
+    }
+
     if (dto.password) {
       dto.password = await bcrypt.hash(dto.password, 10);
     }
@@ -47,6 +66,7 @@ export class UserService {
     return await this.userRepository.update(id, data);
   }
   async remove(id: string) {
+    await this.findOne(id);
     return await this.userRepository.delete(id);
   }
 }
