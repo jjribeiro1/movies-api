@@ -103,6 +103,7 @@ export class UserRepository {
 
   async update(id: string, dto: UpdateUserDto): Promise<UserEntity> {
     try {
+      await this.findById(id);
       const { name, email, cpf, password, role } = dto;
       const updatedUser = await this.prisma.user.update({
         where: { id },
@@ -133,6 +134,7 @@ export class UserRepository {
 
   async delete(id: string): Promise<void> {
     try {
+      await this.findById(id);
       await this.prisma.user.delete({ where: { id } });
     } catch (error) {
       throw new Exception(ExceptionsType.INVALIDDATA, 'Error deleting user');
