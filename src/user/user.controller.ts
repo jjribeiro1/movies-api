@@ -72,7 +72,7 @@ export class UserController {
   })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @AccessLevel(Roles.USER, Roles.ADMIN)
+  @AccessLevel(Roles.ADMIN)
   @Patch(':id')
   async update(
     @Param('id') id: string,
