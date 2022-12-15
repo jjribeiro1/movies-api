@@ -9,10 +9,7 @@ import { GenreEntity } from './entities/genre.entity';
 export class GenreService {
   constructor(private readonly genreRepository: GenreRepository) {}
   async create(dto: CreateGenreDto): Promise<GenreEntity> {
-    const nameAlreadyExists = await this.genreRepository.findByName(dto.name);
-    if (nameAlreadyExists) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'name must be unique');
-    }
+    await this.validateData(dto.name);
     return await this.genreRepository.create(dto);
   }
 
@@ -25,16 +22,20 @@ export class GenreService {
   }
 
   async update(id: string, dto: UpdateGenreDto): Promise<GenreEntity> {
-    await this.genreRepository.findById(id);
-    const nameAlreadyExists = await this.genreRepository.findByName(dto.name);
-    if (nameAlreadyExists) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'name must be unique');
-    }
+    await this.findOne(id);
+    await this.validateData(dto.name);
     return await this.genreRepository.update(id, dto);
   }
 
   async remove(id: string): Promise<void> {
     await this.genreRepository.findById(id);
     return await this.genreRepository.delete(id);
+  }
+
+  async validateData(name: string): Promise<void> {
+    const nameAlreadyExists = await this.genreRepository.findByName(name);
+    if (nameAlreadyExists) {
+      throw new Exception(ExceptionsType.INVALIDDATA, 'name must be unique');
+    }
   }
 }

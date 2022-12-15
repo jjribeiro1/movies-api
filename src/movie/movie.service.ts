@@ -9,20 +9,10 @@ import { MovieEntity } from './entities/movie.entity';
 export class MovieService {
   constructor(private readonly movieRepository: MovieRepository) {}
   async create(dto: CreateMovieDto): Promise<MovieEntity> {
-    const nameAlreadyExists = await this.movieRepository.findByName(dto.name);
-    if (nameAlreadyExists) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'name must be unique');
-    }
+    const { name, imageUrl } = dto;
 
-    const imageUrlAlreadyExists = await this.movieRepository.findByImageUrl(
-      dto.imageUrl,
-    );
-    if (imageUrlAlreadyExists) {
-      throw new Exception(
-        ExceptionsType.INVALIDDATA,
-        'imageUrl must be unique',
-      );
-    }
+    await this.validateData(name, imageUrl);
+
     return await this.movieRepository.create(dto);
   }
 
@@ -35,24 +25,11 @@ export class MovieService {
   }
 
   async update(id: string, dto: UpdateMovieDto): Promise<MovieEntity> {
-    await this.movieRepository.findById(id);
-    if (dto.name) {
-      const nameAlreadyExists = await this.movieRepository.findByName(dto.name);
-      if (nameAlreadyExists) {
-        throw new Exception(ExceptionsType.INVALIDDATA, 'name must be unique');
-      }
-    }
+    await this.findOne(id);
+    const { name, imageUrl } = dto;
 
-    if (dto.imageUrl) {
-      const imageUrlAlreadyExists = await this.movieRepository.findByImageUrl(
-        dto.imageUrl,
-      );
-      if (imageUrlAlreadyExists) {
-        throw new Exception(
-          ExceptionsType.INVALIDDATA,
-          'imageUrl must be unique',
-        );
-      }
+    if (name || imageUrl) {
+      await this.validateData(name, imageUrl);
     }
 
     return await this.movieRepository.update(id, dto);
@@ -61,5 +38,26 @@ export class MovieService {
   async remove(id: string): Promise<void> {
     await this.movieRepository.findById(id);
     return await this.movieRepository.delete(id);
+  }
+
+  async validateData(name?: string, imageUrl?: string): Promise<void> {
+    if (name) {
+      const nameAlreadyExists = await this.movieRepository.findByName(name);
+      if (nameAlreadyExists) {
+        throw new Exception(ExceptionsType.INVALIDDATA, 'name must be unique');
+      }
+    }
+
+    if (imageUrl) {
+      const imageUrlAlreadyExists = await this.movieRepository.findByImageUrl(
+        imageUrl,
+      );
+      if (imageUrlAlreadyExists) {
+        throw new Exception(
+          ExceptionsType.INVALIDDATA,
+          'imageUrl must be unique',
+        );
+      }
+    }
   }
 }

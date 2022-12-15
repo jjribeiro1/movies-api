@@ -12,16 +12,7 @@ export class UserService {
 
   async create(dto: CreateUserDto): Promise<UserEntity> {
     const { email, cpf } = dto;
-    const emailAlreadyExists = await this.userRepository.findByEmail(email);
-
-    if (emailAlreadyExists) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'Email must be unique');
-    }
-
-    const cpfAlreadyExists = await this.userRepository.findByCpf(cpf);
-    if (cpfAlreadyExists) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'Cpf must be unique');
-    }
+    await this.validateData(email, cpf);
 
     const data = {
       ...dto,
@@ -43,18 +34,8 @@ export class UserService {
     await this.findOne(id);
     const { cpf, email } = dto;
 
-    if (email) {
-      const emailAlreadyExists = await this.userRepository.findByEmail(email);
-      if (emailAlreadyExists) {
-        throw new Exception(ExceptionsType.INVALIDDATA, 'email already exists');
-      }
-    }
-
-    if (cpf) {
-      const cpfAlreadyExists = await this.userRepository.findByCpf(cpf);
-      if (cpfAlreadyExists) {
-        throw new Exception(ExceptionsType.INVALIDDATA, 'cpf already exists');
-      }
+    if (cpf || email) {
+      await this.validateData(email, cpf);
     }
 
     if (dto.password) {
@@ -65,8 +46,25 @@ export class UserService {
     };
     return await this.userRepository.update(id, data);
   }
+
   async remove(id: string) {
     await this.findOne(id);
     return await this.userRepository.delete(id);
+  }
+
+  async validateData(email?: string, cpf?: string): Promise<void> {
+    if (email) {
+      const emailAlreadyExists = await this.userRepository.findByEmail(email);
+      if (emailAlreadyExists) {
+        throw new Exception(ExceptionsType.INVALIDDATA, 'Email must be unique');
+      }
+    }
+
+    if (cpf) {
+      const cpfAlreadyExists = await this.userRepository.findByCpf(cpf);
+      if (cpfAlreadyExists) {
+        throw new Exception(ExceptionsType.INVALIDDATA, 'Cpf must be unique');
+      }
+    }
   }
 }

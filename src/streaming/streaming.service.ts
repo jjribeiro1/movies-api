@@ -9,12 +9,7 @@ import { StreamingEntity } from './entities/streaming.entity';
 export class StreamingService {
   constructor(private readonly streamingRepository: StreamingRepository) {}
   async create(dto: CreateStreamingDto): Promise<StreamingEntity> {
-    const nameAlreadyExists = await this.streamingRepository.findByName(
-      dto.name,
-    );
-    if (nameAlreadyExists) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'name must be unique');
-    }
+    await this.validateData(dto.name);
     return await this.streamingRepository.create(dto);
   }
 
@@ -27,14 +22,9 @@ export class StreamingService {
   }
 
   async update(id: string, dto: UpdateStreamingDto): Promise<StreamingEntity> {
-    await this.streamingRepository.findById(id);
+    await this.findOne(id);
     if (dto.name) {
-      const nameAlreadyExists = await this.streamingRepository.findByName(
-        dto.name,
-      );
-      if (nameAlreadyExists) {
-        throw new Exception(ExceptionsType.INVALIDDATA, 'name must be unique');
-      }
+      await this.validateData(dto.name);
     }
 
     return await this.streamingRepository.update(id, dto);
@@ -43,5 +33,12 @@ export class StreamingService {
   async remove(id: string): Promise<void> {
     await this.streamingRepository.findById(id);
     return await this.streamingRepository.delete(id);
+  }
+
+  async validateData(name: string): Promise<void> {
+    const nameAlreadyExists = await this.streamingRepository.findByName(name);
+    if (nameAlreadyExists) {
+      throw new Exception(ExceptionsType.INVALIDDATA, 'name must be unique');
+    }
   }
 }
