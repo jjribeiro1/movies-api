@@ -14,14 +14,13 @@ export class AuthService {
   ) {}
 
   async login(dto: LoginInputDto): Promise<LoginOutPutDto> {
-    const { cpf, password } = dto;
+    const { email, password } = dto;
 
-    const user = await this.userRepository.findByCpf(cpf);
-
+    const user = await this.userRepository.findByEmail(email);
     if (!user) {
       throw new Exception(
         ExceptionsType.UNAUTHORIZED,
-        'cpf or password invalid',
+        'email or password invalid',
       );
     }
 
@@ -29,7 +28,7 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new Exception(
         ExceptionsType.UNAUTHORIZED,
-        'cpf or password invalid',
+        'email or password invalid',
       );
     }
 

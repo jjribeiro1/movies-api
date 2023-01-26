@@ -85,7 +85,9 @@ export class UserRepository {
       where: {
         email,
       },
-      select: this.userSelect,
+      include: {
+        profiles: true,
+      },
     });
 
     return user;

@@ -12,8 +12,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: process.env.JWT_SECRET,
     });
   }
-  async validate(payload: { cpf: string }) {
-    const user = await this.userRepository.findByCpf(payload.cpf);
+  async validate(payload: { email: string }) {
+    const user = await this.userRepository.findByEmail(payload.email);
     if (!user) {
       throw new UnauthorizedException();
     }

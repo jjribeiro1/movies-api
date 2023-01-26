@@ -1,14 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsValidCpf } from 'src/user/decorators/validCpf.decorator';
+import { IsEmail } from 'class-validator';
 import { IsValidPassword } from 'src/user/decorators/validPassword.decorator';
 
 export class LoginInputDto {
-  @IsValidCpf()
+  @IsEmail()
   @ApiProperty({
-    description: 'cpf do usuario',
-    example: '87462578026',
+    description: 'email do usuario',
+    example: 'email@email.com',
   })
-  cpf: string;
+  email: string;
 
   @IsValidPassword()
   @ApiProperty({
