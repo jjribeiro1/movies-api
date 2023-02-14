@@ -57,7 +57,7 @@ export class UserController {
   })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @AccessLevel(Roles.ADMIN)
+  @AccessLevel(Roles.ADMIN, Roles.USER)
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<UserEntity> {
     try {
