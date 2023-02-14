@@ -31,14 +31,18 @@ export class StreamingRepository {
     } catch (error) {
       throw new Exception(
         ExceptionsType.INVALIDDATA,
-        'Error creating streaming',
+        'Error ao tentar criar um streaming',
       );
     }
   }
 
   async findAll(): Promise<StreamingEntity[]> {
     try {
-      const streamings = await this.prisma.streaming.findMany();
+      const streamings = await this.prisma.streaming.findMany({
+        orderBy: {
+          name: 'asc',
+        },
+      });
       return streamings;
     } catch (error) {
       throw new Exception(ExceptionsType.DATABASE);
@@ -94,7 +98,7 @@ export class StreamingRepository {
     } catch (error) {
       throw new Exception(
         ExceptionsType.INVALIDDATA,
-        'Error updating streaming',
+        'Error ao tentar editar um streaming',
       );
     }
   }
@@ -105,7 +109,7 @@ export class StreamingRepository {
     } catch (error) {
       throw new Exception(
         ExceptionsType.INVALIDDATA,
-        'Error deleting streaming',
+        'Error ao tentar excluir um streaming',
       );
     }
   }

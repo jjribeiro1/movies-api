@@ -38,7 +38,10 @@ export class StreamingService {
   async validateData(name: string): Promise<void> {
     const nameAlreadyExists = await this.streamingRepository.findByName(name);
     if (nameAlreadyExists) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'name must be unique');
+      throw new Exception(
+        ExceptionsType.INVALIDDATA,
+        'Esse nome já está em uso',
+      );
     }
   }
 }

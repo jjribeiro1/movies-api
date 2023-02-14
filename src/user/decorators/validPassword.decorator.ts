@@ -33,7 +33,7 @@ export function IsValidPassword() {
           );
         },
         defaultMessage() {
-          return 'password must have at least 8 characters, at least one special character(!, @, #, $, %) and a number';
+          return 'senha deve ter pelo menos 8 caracteres, um caractere especial(!, @, #, $, %) e um número';
         },
       },
     });

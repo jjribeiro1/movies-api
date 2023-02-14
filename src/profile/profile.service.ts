@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-// import { Exception, ExceptionsType } from 'src/exceptions/newException';
 import { MovieRepository } from 'src/repositories/movie.repository';
 import { ProfileRepository } from 'src/repositories/profile.repository';
 import { UserRepository } from 'src/repositories/user.repository';

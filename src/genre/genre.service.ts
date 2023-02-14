@@ -35,7 +35,10 @@ export class GenreService {
   async validateData(name: string): Promise<void> {
     const nameAlreadyExists = await this.genreRepository.findByName(name);
     if (nameAlreadyExists) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'name must be unique');
+      throw new Exception(
+        ExceptionsType.INVALIDDATA,
+        'Esse nome já está em uso',
+      );
     }
   }
 }

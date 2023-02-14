@@ -37,7 +37,10 @@ export class ProfileRepository {
 
       return createdProfile;
     } catch (error) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'Error creating profile');
+      throw new Exception(
+        ExceptionsType.INVALIDDATA,
+        'Error ao tentar criar um perfil',
+      );
     }
   }
 
@@ -102,7 +105,10 @@ export class ProfileRepository {
       });
       return updatedProfile;
     } catch (error) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'Error updating profile');
+      throw new Exception(
+        ExceptionsType.INVALIDDATA,
+        'Erro ao tentar editar um perfil',
+      );
     }
   }
 
@@ -110,7 +116,10 @@ export class ProfileRepository {
     try {
       await this.prisma.profile.delete({ where: { id } });
     } catch (error) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'Error deleting profile');
+      throw new Exception(
+        ExceptionsType.INVALIDDATA,
+        'Erro ao tentar excluir um perfil',
+      );
     }
   }
 
@@ -147,7 +156,7 @@ export class ProfileRepository {
     } catch (error) {
       throw new Exception(
         ExceptionsType.INVALIDDATA,
-        'Error adding movie to favorites',
+        'Erro ao tentar adicionar um filme aos favoritos do perfil',
       );
     }
   }
@@ -185,7 +194,7 @@ export class ProfileRepository {
     } catch (error) {
       throw new Exception(
         ExceptionsType.INVALIDDATA,
-        'Error deleting movie from favorites',
+        'Erro ao tentar excluir um filme dos favoritos do perfil',
       );
     }
   }

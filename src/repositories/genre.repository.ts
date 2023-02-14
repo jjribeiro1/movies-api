@@ -27,13 +27,20 @@ export class GenreRepository {
       });
       return createdGenre;
     } catch (error) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'Error creating genre');
+      throw new Exception(
+        ExceptionsType.INVALIDDATA,
+        'Erro ao tentar criar um gênero',
+      );
     }
   }
 
   async findAll(): Promise<GenreEntity[]> {
     try {
-      const genres = await this.prisma.genre.findMany();
+      const genres = await this.prisma.genre.findMany({
+        orderBy: {
+          name: 'asc',
+        },
+      });
       return genres;
     } catch (error) {
       throw new Exception(ExceptionsType.DATABASE);
@@ -83,7 +90,10 @@ export class GenreRepository {
       });
       return updatedGenre;
     } catch (error) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'Error updating genre');
+      throw new Exception(
+        ExceptionsType.INVALIDDATA,
+        'Erro ao tentar editar um gênero',
+      );
     }
   }
 
@@ -91,7 +101,10 @@ export class GenreRepository {
     try {
       await this.prisma.genre.delete({ where: { id } });
     } catch (error) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'Error deleting genre');
+      throw new Exception(
+        ExceptionsType.INVALIDDATA,
+        'Erro ao tentar excluir um gênero',
+      );
     }
   }
 }

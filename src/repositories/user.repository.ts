@@ -34,7 +34,10 @@ export class UserRepository {
 
       return createdUser;
     } catch (error) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'Error creating user');
+      throw new Exception(
+        ExceptionsType.INVALIDDATA,
+        'Error ao tentar criar usuário',
+      );
     }
   }
 
@@ -129,7 +132,10 @@ export class UserRepository {
       });
       return updatedUser;
     } catch (error) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'Error updating user');
+      throw new Exception(
+        ExceptionsType.INVALIDDATA,
+        'Error ao tentar editar o usuário',
+      );
     }
   }
 
@@ -137,7 +143,10 @@ export class UserRepository {
     try {
       await this.prisma.user.delete({ where: { id } });
     } catch (error) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'Error deleting user');
+      throw new Exception(
+        ExceptionsType.INVALIDDATA,
+        'Error ao tentar excluir o usuário',
+      );
     }
   }
 }

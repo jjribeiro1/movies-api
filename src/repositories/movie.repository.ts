@@ -43,7 +43,10 @@ export class MovieRepository {
     } catch (error) {
       console.log(error);
 
-      throw new Exception(ExceptionsType.INVALIDDATA, 'Error creating movie');
+      throw new Exception(
+        ExceptionsType.INVALIDDATA,
+        'Error ao tentar criar um filme',
+      );
     }
   }
 
@@ -115,7 +118,10 @@ export class MovieRepository {
 
       return updatedMovie;
     } catch (error) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'Error updating movie');
+      throw new Exception(
+        ExceptionsType.INVALIDDATA,
+        'Error ao tentar editar um filme',
+      );
     }
   }
 
@@ -123,7 +129,25 @@ export class MovieRepository {
     try {
       await this.prisma.movie.delete({ where: { id } });
     } catch (error) {
-      throw new Exception(ExceptionsType.INVALIDDATA, 'Error deleting movie');
+      throw new Exception(
+        ExceptionsType.INVALIDDATA,
+        'Erro ao tentar excluir um filme',
+      );
+    }
+  }
+
+  async findMostPopularMovies() {
+    try {
+      const popularMovies = await this.prisma.movie.findMany({
+        orderBy: {
+          favoriteMoviesOnProfile: {
+            _count: 'asc',
+          },
+        },
+      });
+      return popularMovies;
+    } catch (error) {
+      console.log(error);
     }
   }
 }

@@ -18,7 +18,7 @@ export function IsValidRole(property: string[]) {
           return value === admin || value === user ? true : false;
         },
         defaultMessage() {
-          return `property '${propertyName}' must be ${property[0]} or ${property[1]}`;
+          return `propriedade '${propertyName}' deve ser ${property[0]} ou ${property[1]}`;
         },
       },
     });

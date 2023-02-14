@@ -78,7 +78,7 @@ export function IsValidCpf() {
           }
         },
         defaultMessage() {
-          return 'invalid cpf';
+          return 'cpf inválido';
         },
       },
     });

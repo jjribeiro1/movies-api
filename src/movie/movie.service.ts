@@ -44,7 +44,10 @@ export class MovieService {
     if (name) {
       const nameAlreadyExists = await this.movieRepository.findByName(name);
       if (nameAlreadyExists) {
-        throw new Exception(ExceptionsType.INVALIDDATA, 'name must be unique');
+        throw new Exception(
+          ExceptionsType.INVALIDDATA,
+          'Esse nome já está em uso',
+        );
       }
     }
 
@@ -55,7 +58,7 @@ export class MovieService {
       if (imageUrlAlreadyExists) {
         throw new Exception(
           ExceptionsType.INVALIDDATA,
-          'imageUrl must be unique',
+          'Essa Url de imagem já está em uso',
         );
       }
     }

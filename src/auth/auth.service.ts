@@ -20,7 +20,7 @@ export class AuthService {
     if (!user) {
       throw new Exception(
         ExceptionsType.UNAUTHORIZED,
-        'email or password invalid',
+        'email ou senha inválidos',
       );
     }
 
@@ -28,7 +28,7 @@ export class AuthService {
     if (!isPasswordValid) {
       throw new Exception(
         ExceptionsType.UNAUTHORIZED,
-        'email or password invalid',
+        'email ou senha inválidos',
       );
     }
 

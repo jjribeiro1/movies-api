@@ -9,15 +9,15 @@ export class CreateUserDto {
     description: 'Nome próprio do usuário',
     example: 'Lucas',
   })
-  @IsString()
-  @MinLength(3)
+  @IsString({ message: 'Nome precisa ser uma string' })
+  @MinLength(3, { message: 'Nome precisa ter pelo menos 3 caracteres' })
   name: string;
 
   @ApiProperty({
     description: 'Email do usuário',
     example: 'seuemail@hotmail.com',
   })
-  @IsEmail()
+  @IsEmail({ message: 'Email inválido' })
   email: string;
 
   @ApiProperty({

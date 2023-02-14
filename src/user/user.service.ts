@@ -56,14 +56,20 @@ export class UserService {
     if (email) {
       const emailAlreadyExists = await this.userRepository.findByEmail(email);
       if (emailAlreadyExists) {
-        throw new Exception(ExceptionsType.INVALIDDATA, 'Email must be unique');
+        throw new Exception(
+          ExceptionsType.INVALIDDATA,
+          'Esse Email já está em uso',
+        );
       }
     }
 
     if (cpf) {
       const cpfAlreadyExists = await this.userRepository.findByCpf(cpf);
       if (cpfAlreadyExists) {
-        throw new Exception(ExceptionsType.INVALIDDATA, 'Cpf must be unique');
+        throw new Exception(
+          ExceptionsType.INVALIDDATA,
+          'Esse Cpf já está em uso',
+        );
       }
     }
   }

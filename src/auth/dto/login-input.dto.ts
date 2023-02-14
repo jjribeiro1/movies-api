@@ -3,7 +3,7 @@ import { IsEmail } from 'class-validator';
 import { IsValidPassword } from 'src/user/decorators/validPassword.decorator';
 
 export class LoginInputDto {
-  @IsEmail()
+  @IsEmail({ message: 'Email inválido' })
   @ApiProperty({
     description: 'email do usuario',
     example: 'email@email.com',
